@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/posts.css">
+    <title>imgur</title>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="navbar"></div>
+        <h1 class="message">
+            A-cow-bison hybrid is called a "beffalo"
+        </h1>
+        <div class="tag">
+            <h1 class="exploreTags">EXPLORE TAGS</h1>
+        </div>
+    </header>
+    <main class="main-viral">
+        <h1 class="exploreTags">Most Viral</h1>
+        <div id="root"></div>
+    </main>
+</body>
+
+</html>
+<script src="https://kit.fontawesome.com/900e8be725.js"
+ crossorigin="anonymous">
+</script>
+
+<script type="module">
+ import Navbar from "./pages/navBar.js";
+ import tag from "./pages/tag.js";
+ 
+  
+  async function getDataFormTags() {
+    let res = await fetch(
+      "https://api.imgur.com/3/tags?client_id=a3c8168a8aa0d0d"
+    );
+    let d = await res.json();
+    //console.log(d)
+    tag(document.querySelector(".tag"), d.data.tags);
+  }
+  getDataFormTags();
+ document.querySelector(".navbar").innerHTML = Navbar();
+
+ let c=1;
+  async function getData() {
+let data = await fetch(
+  `https://api.imgur.com/3/gallery/search/viral/month/1?q=top&q_type=jpg`,
+  {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "Client-ID a3c8168a8aa0d0d",
+    },
+  }
+)
+  .then((res) => res.json())
+  .then((data) => showData(data.data));
+}
+getData();
+function showData(maindata)
+{
+maindata.forEach((e)=>{
+  let div=document.createElement("div");
+  let img=document.createElement("img");
+  let p1=document.createElement("p");
+  img.src=e.images[0].link;
+  console.log(e);
+  p1.textContent=e.title;
+  img.style.width="300px";
+  img.style.borderRadius="5px";
+  p1.setAttribute("class","ptag");
+  div.setAttribute("class","divine");
+  div.append(img,p1);
+  root.append(div);
+})
+}
+
+ 
+</script>
